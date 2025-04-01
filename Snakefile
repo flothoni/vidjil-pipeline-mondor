@@ -44,9 +44,9 @@ rule preprocess_prefilter:
     input:
         "{outdir}/preprocess-flash/{sample}.fastq.gz",
     output:
-        "{outdir}/preprocess-prefilter/{sample}.detected.vdj.fa.gz",
+        "{outdir}/preprocess-prefilter/{sample}.detected.vdj.fastq.gz",
     params:
-        germline_path=config.get("germline_path", "germline"),
+        germline_path=config.get("germline_path", "/germline"),
         outdir=lambda wildcards: f"{wildcards.outdir}/preprocess-prefilter",
     shell:
         """
@@ -56,10 +56,10 @@ rule preprocess_prefilter:
 
 rule vidjil:
     input:
-        "{outdir}/preprocess-prefilter/{sample}.detected.vdj.fa.gz",
+        "{outdir}/preprocess-prefilter/{sample}.detected.vdj.fastq.gz",
     output:
         "{outdir}/vidjil-results/{sample}.vidjil",
     params:
-        germline_path=config.get("germline_path", "germline"),
+        germline_path=config.get("germline_path", "/germline"),
     shell:
         "vidjil-algo -g {params.germline_path}/homo-sapiens.g --base {wildcards.sample} -o {wildcards.outdir}/vidjil-results {input}"
